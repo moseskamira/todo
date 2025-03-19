@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/models/todo_model.dart';
 
 import '../routes/route_name.dart';
+import '../view_model/todos_provider.dart';
 import '../widgets/add_todo_dialog.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final todoProvider = Provider.of<TodosProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -33,7 +36,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       body: ValueListenableBuilder(
-        valueListenable: todoBox.listenable(),
+        valueListenable: todoProvider.todosListenable,
         builder: (context, Box<dynamic> box, _) {
           if (box.isEmpty) {
             return const Center(child: Text('No Todos Yet. Please add a Todo'));

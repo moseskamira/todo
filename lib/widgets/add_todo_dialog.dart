@@ -51,7 +51,7 @@ class AddTodoDialog extends StatelessWidget {
             controller: _descController,
             maxLines: 3,
             decoration: InputDecoration(
-              hintText: 'Enter todo Description',
+              hintText: 'Todo Description',
               hintStyle: GoogleFonts.poppins(color: Colors.grey.shade600),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),

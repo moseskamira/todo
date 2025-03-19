@@ -25,21 +25,4 @@ class TodoModel extends HiveObject {
       _$TodoModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$TodoModelToJson(this);
-
-  factory TodoModel.fromMap(Map<dynamic, dynamic> map) {
-    return TodoModel(
-      title: map['title'] ?? 'No Title',
-      description: map['description'],
-      status: map['status'],
-    );
-  }
-
-  // Convert TodoModel to Map (if needed)
-  Map<String, dynamic> toMap() {
-    return {
-      'title': title,
-      'description': description,
-      'status': status,
-    };
-  }
 }
