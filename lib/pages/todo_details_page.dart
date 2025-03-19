@@ -52,46 +52,41 @@ class _TodoDetailsPageState extends State<TodoDetailsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          elevation: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildDetailRow('Title', widget.todo.title ?? 'No Title'),
-                _buildDetailRow(
-                    'Description', widget.todo.description ?? 'No Description'),
-                _buildDetailRow('Status', widget.todo.status ?? 'Unknown'),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(
-                        RouteName.updateTodoScreen,
-                        arguments: {'todo': widget.todo},
-                      );
-                    },
-                    icon: const Icon(Icons.edit, color: Colors.white),
-                    label: Text(
-                      'Edit Todo',
-                      style: GoogleFonts.poppins(
-                          fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildDetailRow('Title', widget.todo.title ?? 'No Title'),
+              _buildDetailRow(
+                  'Description', widget.todo.description ?? 'No Description'),
+              _buildDetailRow('Status', widget.todo.status ?? 'Unknown'),
+              const SizedBox(height: 30),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      RouteName.updateTodoScreen,
+                      arguments: {'todo': widget.todo},
+                    );
+                  },
+                  icon: const Icon(Icons.edit, color: Colors.white),
+                  label: Text(
+                    'Edit Todo',
+                    style: GoogleFonts.poppins(
+                        fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
