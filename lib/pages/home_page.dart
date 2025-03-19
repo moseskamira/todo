@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:todo/models/todo_model.dart';
-import 'package:todo/routes/route_name.dart';
-import 'package:todo/view_model/todos_provider.dart';
+
+import '../routes/route_name.dart';
+import '../widgets/add_todo_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,9 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Box todoBox = Hive.box('todoBox');
+
   @override
   Widget build(BuildContext context) {
-    final todoProvider = Provider.of<TodosProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -26,86 +28,76 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      body: FutureBuilder<List<TodoModel>>(
-        future: todoProvider.fetchTodos(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+      body: ValueListenableBuilder(
+        valueListenable: todoBox.listenable(),
+        builder: (context, Box<dynamic> box, _) {
+          if (box.isEmpty) {
+            return Center(child: Text('No Todos Yet. Please add Todo'));
           }
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text(
-                'Could not load Todos',
-                style: TextStyle(color: Colors.red),
-              ),
-            );
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No Todos Found'));
-          }
-          List<TodoModel> myTodos = snapshot.data!;
-          return Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: ListView.separated(
-              itemCount: myTodos.length,
-              itemBuilder: (context, index) {
-                final todo = myTodos[index];
-
-                return Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+          return ListView.separated(
+            itemCount: box.length,
+            itemBuilder: (context, index) {
+              final todo = box.getAt(index);
+              return Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
                   ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                  title: Text(
+                    todo['title'] ?? 'No Title',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
-                    title: Text(
-                      todo.title ?? 'No Title',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                  ),
+                  subtitle: Text(
+                    todo['description'] ?? 'No Description',
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.more_horiz, color: Colors.blue),
+                        onPressed: () {
+                          TodoModel tm = TodoModel();
+                          tm.title = todo['title'];
+                          tm.description = todo['description'];
+                          tm.status = todo['status'];
+                          Navigator.of(context).pushNamed(
+                            RouteName.todoDetailsScreen,
+                            arguments: {'todo': tm},
+                          );
+                        },
                       ),
-                    ),
-                    subtitle: Text(
-                      todo.description ?? 'No Description',
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon:
-                              const Icon(Icons.more_horiz, color: Colors.blue),
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(
-                              RouteName.todoDetailsScreen,
-                              arguments: {'todo': todo},
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () {
-                            // todoProvider.deleteTodo(todo.id!);
-                          },
-                        ),
-                      ],
-                    ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          // todoProvider.deleteTodo(todo.id!);
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
-              separatorBuilder: (context, index) => const SizedBox(height: 10),
-            ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigator.of(context).pushNamed(RouteName.addTodoScreen);
+          showDialog(
+            context: context,
+            builder: (context) => AddTodoDialog(todoBox: todoBox),
+          );
         },
         child: const Icon(Icons.add),
       ),
