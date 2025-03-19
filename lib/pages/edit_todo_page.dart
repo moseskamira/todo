@@ -48,7 +48,11 @@ class _EditToDoPageState extends State<EditToDoPage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(
           'Update ToDo',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
       ),
