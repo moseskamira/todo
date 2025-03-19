@@ -27,4 +27,8 @@ class TodosProvider extends ChangeNotifier {
   void deleteTodo(int index) {
     todoBox.deleteAt(index);
   }
+
+  Future<TodoModel?>? getDetails(int index) async {
+    return todoBox.getAt(index);
+  }
 }
