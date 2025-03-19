@@ -10,7 +10,10 @@ import '../models/todo_model.dart';
 class TodoDetailsPage extends StatefulWidget {
   final int index;
 
-  const TodoDetailsPage({super.key, required this.index});
+  const TodoDetailsPage({
+    super.key,
+    required this.index,
+  });
 
   @override
   State<TodoDetailsPage> createState() => _TodoDetailsPageState();
@@ -48,7 +51,11 @@ class _TodoDetailsPageState extends State<TodoDetailsPage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(
           'Todo Details',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
       ),
