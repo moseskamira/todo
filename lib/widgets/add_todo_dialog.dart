@@ -18,7 +18,7 @@ class AddTodoDialog extends StatelessWidget {
     return AlertDialog(
       title: TextField(
         controller: _titleController,
-        decoration: InputDecoration(hintText: 'Enter todo title'),
+        decoration: InputDecoration(hintText: 'Todo title'),
       ),
       content: TextField(
         controller: _descController,
