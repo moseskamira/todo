@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/models/todo_model.dart';
 
 import '../routes/route_name.dart';
 import '../view_model/todos_provider.dart';
@@ -15,12 +14,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final Box<TodoModel> todoBox;
-
   @override
   void initState() {
     super.initState();
-    todoBox = Hive.box<TodoModel>('todoBox');
   }
 
   @override
@@ -39,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         valueListenable: todoProvider.todosListenable,
         builder: (context, Box<dynamic> box, _) {
           if (box.isEmpty) {
-            return const Center(child: Text('No Todos Yet. Please add a Todo'));
+            return const Center(child: Text('No Todos Yet.'));
           }
 
           return ListView.separated(
@@ -85,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          _deleteTodo(index);
+                          todoProvider.deleteTodo(index);
                         },
                       ),
                     ],
@@ -101,17 +97,11 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => AddTodoDialog(todoBox: todoBox),
+            builder: (context) => AddTodoDialog(),
           );
         },
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  void _deleteTodo(int index) {
-    setState(() {
-      todoBox.deleteAt(index);
-    });
   }
 }

@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 import '../models/todo_model.dart';
 import '../view_model/todos_provider.dart';
 
 class AddTodoDialog extends StatelessWidget {
-  final Box<TodoModel> todoBox;
-
-  AddTodoDialog({
-    super.key,
-    required this.todoBox,
-  });
+  AddTodoDialog({super.key});
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
