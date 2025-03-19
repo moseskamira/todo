@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/models/todo_model.dart';
+import 'package:todo/routes/route_name.dart';
 
 class TodoDetailsPage extends StatefulWidget {
   final TodoModel todo;
@@ -59,6 +61,28 @@ class _TodoDetailsPageState extends State<TodoDetailsPage> {
                 ),
               ],
             ),
+            SizedBox(height: 30),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed(RouteName.updateTodoScreen,
+                    arguments: {'todo': widget.todo});
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      'Edit Todo',
+                      style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white),
+                    ),
+                  )),
+            )
           ],
         ),
       ),
