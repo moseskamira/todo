@@ -17,18 +17,22 @@ class Routes {
       case RouteName.todoDetailsScreen:
         Map<String, dynamic>? args = settings.arguments as Map<String, dynamic>;
         TodoModel todoModel = args['todo'] as TodoModel;
+        int index = args['index'] as int;
         return MaterialPageRoute(
           builder: (BuildContext context) => TodoDetailsPage(
             todo: todoModel,
+            index: index,
           ),
         );
 
       case RouteName.updateTodoScreen:
         Map<String, Object>? args = settings.arguments as Map<String, Object>;
         TodoModel todoModel = args['todo'] as TodoModel;
+        int index = args['index'] as int;
         return MaterialPageRoute(
           builder: (BuildContext context) => EditToDoPage(
             todo: todoModel,
+            index: index,
           ),
         );
 

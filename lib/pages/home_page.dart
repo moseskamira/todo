@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           Navigator.of(context).pushNamed(
                             RouteName.todoDetailsScreen,
-                            arguments: {'todo': todo},
+                            arguments: {'todo': todo, 'index': index},
                           );
                         },
                       ),
