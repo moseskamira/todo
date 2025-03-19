@@ -5,10 +5,12 @@ import 'package:todo/routes/route_name.dart';
 
 class TodoDetailsPage extends StatefulWidget {
   final TodoModel todo;
+  final int index;
 
   const TodoDetailsPage({
     super.key,
     required this.todo,
+    required this.index,
   });
 
   @override
@@ -68,7 +70,7 @@ class _TodoDetailsPageState extends State<TodoDetailsPage> {
                   onPressed: () {
                     Navigator.of(context).pushNamed(
                       RouteName.updateTodoScreen,
-                      arguments: {'todo': widget.todo},
+                      arguments: {'todo': widget.todo, 'index': widget.index},
                     );
                   },
                   icon: const Icon(Icons.edit, color: Colors.white),

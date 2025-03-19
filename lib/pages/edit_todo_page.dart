@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/models/todo_model.dart';
+
+import '../view_model/todos_provider.dart';
 
 class EditToDoPage extends StatefulWidget {
   final TodoModel todo;
+  final int index;
 
-  const EditToDoPage({super.key, required this.todo});
+  const EditToDoPage({
+    super.key,
+    required this.todo,
+    required this.index,
+  });
 
   @override
   State<EditToDoPage> createState() => _EditToDoPageState();
@@ -14,6 +22,7 @@ class _EditToDoPageState extends State<EditToDoPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
+  late TextEditingController _statusController;
   String? _status;
 
   @override
@@ -22,7 +31,7 @@ class _EditToDoPageState extends State<EditToDoPage> {
     _titleController = TextEditingController(text: widget.todo.title);
     _descriptionController =
         TextEditingController(text: widget.todo.description);
-    _status = widget.todo.status ?? 'Pending';
+    _status = widget.todo.status;
   }
 
   @override
@@ -32,18 +41,9 @@ class _EditToDoPageState extends State<EditToDoPage> {
     super.dispose();
   }
 
-  void _saveChanges() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pop(context, {
-        'title': _titleController.text,
-        'description': _descriptionController.text,
-        'status': _status,
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final todoProvider = Provider.of<TodosProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -107,7 +107,16 @@ class _EditToDoPageState extends State<EditToDoPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _saveChanges,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        todoProvider.updateToDo(
+                            widget.index,
+                            _titleController.text.trim(),
+                            _descriptionController.text.trim(),
+                            _status ?? 'Pending');
+                        Navigator.of(context).pop();
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
