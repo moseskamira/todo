@@ -35,10 +35,13 @@ dart run build_runner watch --delete-conflicting-outputs
 ## Project Implemented Concepts
 - Providers: State Management
 - Material Route: Route Management
+- Hive: Local storage
 
 ### Screenshot showing Items in Bottom Sheet
 
 ![List of Todos](/assets/one.png)
+
+![Todo Add](/assets/add.png)
 
 ![Todo details](/assets/two.png)
 
