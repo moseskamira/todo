@@ -14,40 +14,54 @@ class TodoDetailsPage extends StatefulWidget {
 }
 
 class _TodoDetailsPageState extends State<TodoDetailsPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Details Screen'),
+        centerTitle: true,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 8.0,
+        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Row(
+              children: [
+                const Text(
+                  'Title:',
+                ),
+                Text(
+                  '${widget.todo.title}',
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Row(
+              children: [
+                const Text(
+                  'Description:',
+                ),
+                Text(
+                  '${widget.todo.description}',
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Text(
+                  'Status:',
+                ),
+                Text(
+                  '${widget.todo.status}',
+                ),
+              ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

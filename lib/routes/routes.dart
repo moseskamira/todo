@@ -10,7 +10,7 @@ class Routes {
     switch (settings.name) {
       case RouteName.homeScreen:
         return MaterialPageRoute(
-          builder: (BuildContext context) => const HomePage(title: 'Todo Test'),
+          builder: (BuildContext context) => const HomePage(),
         );
 
       case RouteName.todoDetailsScreen:

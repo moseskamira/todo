@@ -5,23 +5,13 @@ import 'package:todo/routes/route_name.dart';
 import 'package:todo/view_model/todos_provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
-  final String title;
+  const HomePage({super.key, e});
 
   @override
   State<HomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -33,7 +23,8 @@ class _MyHomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text('ToDo Test'),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<TodoModel>>(
         future: todoProvider.fetchTodos(),
@@ -81,11 +72,6 @@ class _MyHomePageState extends State<HomePage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
