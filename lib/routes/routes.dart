@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/models/todo_model.dart';
+import 'package:todo/pages/edit_todo_page.dart';
 import 'package:todo/pages/home_page.dart';
 import 'package:todo/routes/route_name.dart';
 
@@ -17,9 +18,19 @@ class Routes {
         Map<String, Object>? args = settings.arguments as Map<String, Object>;
         TodoModel todoModel = args['todo'] as TodoModel;
         return MaterialPageRoute(
-            builder: (BuildContext context) => TodoDetailsPage(
-                  todo: todoModel,
-                ));
+          builder: (BuildContext context) => TodoDetailsPage(
+            todo: todoModel,
+          ),
+        );
+
+      case RouteName.updateTodoScreen:
+        Map<String, Object>? args = settings.arguments as Map<String, Object>;
+        TodoModel todoModel = args['todo'] as TodoModel;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => EditToDoPage(
+            todo: todoModel,
+          ),
+        );
 
       default:
         return MaterialPageRoute(builder: (_) {
