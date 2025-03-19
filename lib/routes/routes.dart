@@ -15,7 +15,7 @@ class Routes {
         );
 
       case RouteName.todoDetailsScreen:
-        Map<String, Object>? args = settings.arguments as Map<String, Object>;
+        Map<String, dynamic>? args = settings.arguments as Map<String, dynamic>;
         TodoModel todoModel = args['todo'] as TodoModel;
         return MaterialPageRoute(
           builder: (BuildContext context) => TodoDetailsPage(

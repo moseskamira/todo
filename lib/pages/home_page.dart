@@ -13,7 +13,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Box todoBox = Hive.box('todoBox');
+  late final Box<TodoModel> todoBox;
+
+  @override
+  void initState() {
+    super.initState();
+    todoBox = Hive.box<TodoModel>('todoBox');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +28,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text(
           'ToDo List',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -32,12 +36,14 @@ class _HomePageState extends State<HomePage> {
         valueListenable: todoBox.listenable(),
         builder: (context, Box<dynamic> box, _) {
           if (box.isEmpty) {
-            return Center(child: Text('No Todos Yet. Please add Todo'));
+            return const Center(child: Text('No Todos Yet. Please add a Todo'));
           }
+
           return ListView.separated(
             itemCount: box.length,
             itemBuilder: (context, index) {
               final todo = box.getAt(index);
+              if (todo == null) return const SizedBox.shrink();
               return Card(
                 elevation: 3,
                 shape: RoundedRectangleBorder(
@@ -49,14 +55,14 @@ class _HomePageState extends State<HomePage> {
                     vertical: 8,
                   ),
                   title: Text(
-                    todo['title'] ?? 'No Title',
+                    todo.title ?? 'No Title',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   subtitle: Text(
-                    todo['description'] ?? 'No Description',
+                    todo.description ?? 'No Description',
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -67,20 +73,16 @@ class _HomePageState extends State<HomePage> {
                       IconButton(
                         icon: const Icon(Icons.more_horiz, color: Colors.blue),
                         onPressed: () {
-                          TodoModel tm = TodoModel();
-                          tm.title = todo['title'];
-                          tm.description = todo['description'];
-                          tm.status = todo['status'];
                           Navigator.of(context).pushNamed(
                             RouteName.todoDetailsScreen,
-                            arguments: {'todo': tm},
+                            arguments: {'todo': todo},
                           );
                         },
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          // todoProvider.deleteTodo(todo.id!);
+                          _deleteTodo(index);
                         },
                       ),
                     ],
@@ -102,5 +104,11 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void _deleteTodo(int index) {
+    setState(() {
+      todoBox.deleteAt(index);
+    });
   }
 }
