@@ -114,7 +114,7 @@ class _EditToDoPageState extends State<EditToDoPage> {
                           '${updatedTodo.description}',
                           '${updatedTodo.status}',
                         );
-                        Navigator.of(context).pop(updatedTodo);
+                        Navigator.of(context).pop(widget.index);
                       }
                     },
                     style: ElevatedButton.styleFrom(
