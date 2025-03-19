@@ -10,4 +10,8 @@ class TodosProvider extends ChangeNotifier {
   void addToDo(TodoModel todoModel) {
     todoBox.add(todoModel);
   }
+
+  void deleteTodo(int index) {
+    todoBox.deleteAt(index);
+  }
 }

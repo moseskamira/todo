@@ -37,7 +37,7 @@ dart run build_runner watch --delete-conflicting-outputs
 - Material Route: Route Management
 - Hive: Local storage
 
-### Screenshot showing Items in Bottom Sheet
+### Screenshot showing CRUD of the Todo
 
 ![List of Todos](/assets/one.png)
 
@@ -46,3 +46,5 @@ dart run build_runner watch --delete-conflicting-outputs
 ![Todo details](/assets/two.png)
 
 ![Todo Edit](/assets/three.png)
+
+![video mp4](assets/video.mp4)
