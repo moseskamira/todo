@@ -78,7 +78,8 @@ class _HomePageState extends State<HomePage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          icon:
+                              const Icon(Icons.more_horiz, color: Colors.blue),
                           onPressed: () {
                             Navigator.of(context).pushNamed(
                               RouteName.todoDetailsScreen,
