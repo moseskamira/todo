@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -58,85 +59,101 @@ class _EditToDoPageState extends State<EditToDoPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextFormField(
-                controller: _titleController,
-                decoration: InputDecoration(
-                  labelText: "Title",
-                  labelStyle: GoogleFonts.poppins(),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    value!.trim().isEmpty ? "Title is required" : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _descriptionController,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  labelText: "Description",
-                  labelStyle: GoogleFonts.poppins(),
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                value: _status,
-                items: ['Pending', 'In Progress', 'Completed']
-                    .map((status) => DropdownMenuItem(
-                          value: status,
-                          child: Text(status, style: GoogleFonts.poppins()),
-                        ))
-                    .toList(),
-                decoration: InputDecoration(
-                  labelText: "Status",
-                  labelStyle: GoogleFonts.poppins(),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    value == null ? "Please select a status" : null,
-                onChanged: (newStatus) => setState(() => _status = newStatus),
-              ),
-              const SizedBox(height: 24),
-              Consumer<TodosProvider>(
-                builder: (context, todoProvider, child) => SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        final updatedTodo = TodoModel()
-                          ..title = _titleController.text.trim()
-                          ..description = _descriptionController.text.trim()
-                          ..status = _status ?? 'Pending';
-                        todoProvider.updateToDo(
-                          widget.index,
-                          '${updatedTodo.title}',
-                          '${updatedTodo.description}',
-                          '${updatedTodo.status}',
-                        );
-                        Navigator.of(context).pop(widget.index);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+        child: LayoutBuilder(builder: (context, constraints) {
+          double maxWidth = constraints.maxWidth * 0.4;
+          maxWidth = kIsWeb ? maxWidth : MediaQuery.sizeOf(context).width;
+          return Center(
+            child: Form(
+              key: _formKey,
+              child: SizedBox(
+                width: maxWidth,
+                child: Column(
+                  mainAxisAlignment: kIsWeb
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: _titleController,
+                      decoration: InputDecoration(
+                        labelText: "Title",
+                        labelStyle: GoogleFonts.poppins(),
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          value!.trim().isEmpty ? "Title is required" : null,
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _descriptionController,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        labelText: "Description",
+                        labelStyle: GoogleFonts.poppins(),
+                        border: OutlineInputBorder(),
                       ),
                     ),
-                    child: Text(
-                      "Save Changes",
-                      style: GoogleFonts.poppins(fontSize: 16),
+                    const SizedBox(height: 16),
+                    DropdownButtonFormField<String>(
+                      value: _status,
+                      items: ['Pending', 'In Progress', 'Completed']
+                          .map((status) => DropdownMenuItem(
+                                value: status,
+                                child:
+                                    Text(status, style: GoogleFonts.poppins()),
+                              ))
+                          .toList(),
+                      decoration: InputDecoration(
+                        labelText: "Status",
+                        labelStyle: GoogleFonts.poppins(),
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          value == null ? "Please select a status" : null,
+                      onChanged: (newStatus) =>
+                          setState(() => _status = newStatus),
                     ),
-                  ),
+                    const SizedBox(height: 24),
+                    Consumer<TodosProvider>(
+                      builder: (context, todoProvider, child) => SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              final updatedTodo = TodoModel()
+                                ..title = _titleController.text.trim()
+                                ..description =
+                                    _descriptionController.text.trim()
+                                ..status = _status ?? 'Pending';
+                              todoProvider.updateToDo(
+                                widget.index,
+                                '${updatedTodo.title}',
+                                '${updatedTodo.description}',
+                                '${updatedTodo.status}',
+                              );
+                              Navigator.of(context).pop(widget.index);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(
+                            "Save Changes",
+                            style: GoogleFonts.poppins(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }
